@@ -6,10 +6,13 @@ _warning_: This doesn't actually work in deno deploy due to the worker API seemi
 This is a simple example of trying to provide a somewhat isolated runtime to dynamically run a program in the cycle of a request.
 
 ```
+git clone git@github.com:NickTomlin/dynamic-deno.git
+cd dynamic-deno
 deno run --unstable -A server.js
+
 # In a separate terminal or tmux pane
 curl http://localhost:8000/run/adder -X POST --data '{ "a": 1, "b": 2, "c": 3}'
-curl http://localhost:8000/run/greeter -X POST --data '{ "name": "Nick"}'
+curl http://localhost:8000/run/greeter -X POST --data '{ "name": "Deno"}'
 ```
 
 ## Why?
