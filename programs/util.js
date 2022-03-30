@@ -1,7 +1,7 @@
-export async function wait (timeout = 1000) {
+export async function wait (timeout = 500) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve()
-    }, 1000)
+    }, timeout)
   })
 }
