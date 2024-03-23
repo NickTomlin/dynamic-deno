@@ -1,9 +1,17 @@
-import { serve } from "https://deno.land/x/sift@0.4.3/mod.ts";
+const port = 9009;
 
-serve({
-  "/": () => new Response("Hi"),
-  "/run/:moduleName": async (request, params) => {
-    if (request.method !== "POST") { return new Response("Must be json") }
+const handler = async (request) => {
+  const body = `Your user-agent is:\n\n${
+    request.headers.get("user-agent") ?? "Unknown"
+  }`;
+
+  if (request.url === "/") {
+    return new Response("Hi")
+  }
+
+  if (request.url.startsWith("/run") && request.method === "POST") {
+    if (request.body === null) { return new Response("Must be json") }
+    const params = await request.json()
     if (!params.moduleName) { return new Response("No module name supplied") }
     const input = await request.json()
     return new Promise((resolve, reject) => {
@@ -39,4 +47,10 @@ serve({
       })
     })
   }
-})
+  request.url.startsWith("/run") && console.log("run route")
+
+  return new Response(body, { status: 200 });
+};
+
+console.log(`HTTP server running. Access it at: http://localhost:${port}/`);
+Deno.serve({ port }, handler);
